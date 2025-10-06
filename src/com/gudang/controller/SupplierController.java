@@ -18,7 +18,7 @@ public class SupplierController {
     @FXML private TableColumn<Supplier, String> colAlamat;
     @FXML private TableColumn<Supplier, String> colTelepon;
 
-    private ObservableList<Supplier> data = FXCollections.observableArrayList();
+    private final ObservableList<Supplier> data = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
@@ -36,8 +36,8 @@ public class SupplierController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/TambahSupplier.fxml"));
             Scene scene = new Scene(loader.load());
 
-            // TambahSupplierController controller = loader.getController();
-            // controller.setSupplierController(this);
+            TambahSupplierController controller = loader.getController();
+            controller.setSupplierController(this);
 
             Stage stage = new Stage();
             stage.setScene(scene);
