@@ -55,16 +55,40 @@ public class SupplierController {
     }
 
     @FXML private void editSupplier() {
-        showAlert("Info", "Fitur edit belum dibuat");
+        Supplier selected = tblSupplier.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Error", "Pilih supplier dulu!");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditSupplier.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            EditSupplierController controller = loader.getController();
+            controller.setSupplierController(this);
+            controller.setSupplier(selected);
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Edit Supplier");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            refreshTable();
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML private void hapusSupplier() {
         Supplier selected = tblSupplier.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, 
-                "Hapus supplier " + selected.getNama() + " ?", 
-                ButtonType.YES, ButtonType.NO);
-
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                selected.getNama(),
+                ButtonType.NO, ButtonType.YES);
+            alert.setHeaderText("Apakah Anda yakin ingin menghapus?");
             alert.setTitle("Konfirmasi Hapus");
             alert.showAndWait();
 
@@ -91,5 +115,9 @@ public class SupplierController {
             }
         }
         return false;
+    }
+
+    public void refreshTable() {
+        tblSupplier.refresh();
     }
 }
